@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
@@ -18,6 +19,7 @@ namespace BankingApp.Users
 
         public User Login(string email, string password)
         {
+            password = EncryptPassword(password);
             return GetAllUsers().FirstOrDefault(u =>
             {
                 return u.Email.Equals(email) && u.Password.Equals(password);
@@ -53,6 +55,10 @@ namespace BankingApp.Users
 
         public UserResponse SaveOrUpdate(UserRequest request)
         {
+            // encrypt password
+            request.Password = EncryptPassword(request.Password);
+            request.ConfirmPassword = EncryptPassword(request.ConfirmPassword);
+
             User entity = GetUserById(request.ID);
 
             if (entity == null)
@@ -80,7 +86,7 @@ namespace BankingApp.Users
             }
 
             // validation of request 
-            if (!Verify(entity) || request.Password != request.ConfirmPassword)
+            if (!Verify(entity) || !request.Password.Equals(request.ConfirmPassword))
                 return null;
 
             _repository.Add(entity);
@@ -102,7 +108,6 @@ namespace BankingApp.Users
 
         bool Verify(User user)
         {
-            Regex passwordRegex = new Regex(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$");
             Regex emailRegex = new Regex(@"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$");
 
             if (user.ID < 0) return false;
@@ -112,9 +117,38 @@ namespace BankingApp.Users
             if (user.RegistrationDate.Ticks > DateTime.Now.Ticks) return false;
 
             if (!emailRegex.IsMatch(user.Email)) return false;
-            if (!passwordRegex.IsMatch(user.Password)) return false;
+            if (user.Password.Length != 64) return false;
 
             return true;
+        }
+
+        string EncryptPassword(string pass)
+        {
+            // confirm our password is a valid regex match before encrypting
+            Regex passwordRegex = new Regex(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$");
+            if (!passwordRegex.IsMatch(pass))
+                return ""; // otherwise return false, which ensures the password will never succeed
+
+
+            // After confirming password validity, we can now begin converting the password into a SHA256 string
+            SHA256CryptoServiceProvider sha256 = new SHA256CryptoServiceProvider();
+
+            // convert the string into an array of bytes
+            byte[] ba1 = System.Text.Encoding.UTF8.GetBytes(pass);
+
+            // hash using the above crypto service provider
+            ba1 = sha256.ComputeHash(ba1);
+
+            // then rebuild the string based off the computed byte array
+            System.Text.StringBuilder sb = new System.Text.StringBuilder();
+
+            foreach (byte b in ba1)
+            {
+                sb.Append(b.ToString("x2").ToLower());
+            }
+
+            // return the encrypted password
+            return sb.ToString();
         }
     }
 }
