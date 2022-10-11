@@ -60,6 +60,7 @@ namespace BankingApp.Users
                 // create new user if entity does not exist in database
 
                 entity = new User(request);
+                entity.RegistrationDate = DateTime.Now;
             }
             else
             {
