@@ -76,9 +76,6 @@ namespace BankingApp.Users
 
                 if (request.Password != null && request.Password.Trim().Length > 0 && request.ConfirmPassword.Equals(request.Password))
                     entity.Password = request.Password;
-
-                Console.WriteLine(entity.FirstName);
-                Console.WriteLine(request.FirstName);
             }
 
             // validation of request 
@@ -88,6 +85,18 @@ namespace BankingApp.Users
             _repository.Add(entity);
 
             return new UserResponse(entity);
+        }
+
+        public UserResponse Delete(int id)
+        {
+            User entity = GetUserById(id);
+
+            if (entity == null)
+                return null;
+
+            entity.IsActive = false;
+
+            return SaveOrUpdate(new UserRequest(entity));
         }
 
         bool Verify(User user)
