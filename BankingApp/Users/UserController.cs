@@ -40,6 +40,7 @@ namespace BankingApp.Users
                 return new UserResponse[] { };
             }
 
+            // return the requested user's info
             return new UserResponse[] { user };
         }
 
