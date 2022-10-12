@@ -52,6 +52,7 @@ namespace BankingApp.Authentication
             {
                 new Claim(ClaimTypes.Name, userInfo.ID.ToString()),
                 new Claim(ClaimTypes.Email, userInfo.Email),
+                new Claim(ClaimTypes.Role, userInfo.IsAdmin.ToString()),
                 new Claim(ClaimTypes.NameIdentifier,
             Guid.NewGuid().ToString())
             };

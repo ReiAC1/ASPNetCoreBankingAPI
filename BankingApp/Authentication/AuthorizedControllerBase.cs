@@ -26,5 +26,22 @@ namespace BankingApp.Authentication
                 return int.Parse(token.Claims.FirstOrDefault(c => c.Type.Equals(ClaimTypes.Name)).Value);
             }
         }
+
+        public bool AuthUserAdmin
+        {
+            get
+            {
+                if (!HttpContext.Request.Headers.ContainsKey("Authorization"))
+                {
+                    return false;
+                }
+
+                string jwt = HttpContext.Request.Headers["Authorization"];
+
+                var token = new JwtSecurityTokenHandler().ReadJwtToken(jwt);
+
+                return bool.Parse(token.Claims.FirstOrDefault(c => c.Type.Equals(ClaimTypes.Role)).Value);
+            }
+        }
     }
 }

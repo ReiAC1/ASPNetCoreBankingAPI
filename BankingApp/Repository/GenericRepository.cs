@@ -15,7 +15,11 @@ namespace BankingApp.Repository
         }
         public void Add(T entity)
         {
-            Remove(entity);
+            // using reflection to get the value of ID
+            if (GetById((int)entity.GetType().GetProperty("ID").GetValue(entity, null)) != null)
+               Remove(entity); // Remove the entity if it exists
+
+            // create and store new entity
             _context.Set<T>().Add(entity);
             _context.SaveChanges();
         }

@@ -17,6 +17,8 @@ namespace BankingApp.Users.DTO
         public UserResponse() { }
         public UserResponse(User user)
         {
+            if (user == null) return;
+
             ID = user.ID;
             FirstName = user.FirstName;
             LastName = user.LastName;

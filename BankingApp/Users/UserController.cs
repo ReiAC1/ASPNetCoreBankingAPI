@@ -35,11 +35,12 @@ namespace BankingApp.Users
 
             // returns selected user, or empty arrasy if nothing
             var user = _userService.GetById(id.Value);
-            if (user == null)
+            if (user == null || user.ID == 0)
             {
                 return new UserResponse[] { };
             }
 
+            // return the requested user's info
             return new UserResponse[] { user };
         }
 
@@ -53,7 +54,6 @@ namespace BankingApp.Users
         public bool Update([FromBody] UserRequest request)
         {
             User authUser = _userService.GetUserById(AuthUserID);
-            Console.WriteLine(authUser);
 
             if (authUser == null)
                 return false;
@@ -61,6 +61,17 @@ namespace BankingApp.Users
             request.ID = authUser.ID;
 
             return _userService.SaveOrUpdate(request) != null;
+        }
+
+        [HttpDelete("deactivate")]
+        public bool Delete()
+        {
+            User authUser = _userService.GetUserById(AuthUserID);
+
+            if (authUser == null)
+                return false;
+
+            return _userService.Delete(AuthUserID) == null;
         }
     }
 }

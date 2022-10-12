@@ -19,8 +19,10 @@ namespace BankingApp.Users
         public string LastName { get; set; }
         public DateTime RegistrationDate { get; set; }
 
+        public bool IsActive { get; set; }
+        public bool IsAdmin { get; set; }
 
-        public User () { }
+        public User () { ID = 0; IsActive = true; IsAdmin = false; }
 
         public User (UserRequest request)
         {
@@ -30,6 +32,8 @@ namespace BankingApp.Users
             Email = request.Email;
             Password = request.Password;
             RegistrationDate = request.RegistrationDate;
+            IsAdmin = false;
+            IsActive = true;
         }
     }
 }
