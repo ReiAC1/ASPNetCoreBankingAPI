@@ -1,4 +1,5 @@
-﻿using BankingApp.Users;
+﻿using BankingApp.AccountTypes;
+using BankingApp.Users;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -18,6 +19,7 @@ namespace BankingApp
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<User>().ToTable("users");
+            modelBuilder.Entity<AccountType>().ToTable("account_types");
         }
     }
 }
