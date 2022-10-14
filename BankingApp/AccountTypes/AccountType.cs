@@ -16,9 +16,6 @@ namespace BankingApp.AccountTypes
         public int ID { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        
-        // DefaultValue allows us to specifcy the initial value of a Property
-        [DefaultValue(true)]
-        public bool IsAvailable { get; set; }
+        public bool IsAvailable { get; set; } = true;
     }
 }
