@@ -18,10 +18,8 @@ namespace BankingApp.Accounts
         public AccountType AccountType { get; set; }
         public float Balance { get; set; }
         public string Nickname { get; set; }
+        public bool IsActive { get; set; } = true;
 
-        [DefaultValue(true)]
-        public bool IsActive { get; set; }
-        
 
         public ICollection<AccountOwner> Owners { get; set; }
     }
