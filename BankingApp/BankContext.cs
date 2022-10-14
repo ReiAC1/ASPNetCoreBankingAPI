@@ -1,4 +1,6 @@
-﻿using BankingApp.AccountTypes;
+﻿using BankingApp.AccountOwners;
+using BankingApp.Accounts;
+using BankingApp.AccountTypes;
 using BankingApp.Users;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -20,6 +22,8 @@ namespace BankingApp
         {
             modelBuilder.Entity<User>().ToTable("users");
             modelBuilder.Entity<AccountType>().ToTable("account_types");
+            modelBuilder.Entity<AccountOwner>().ToTable("account_owners");
+            modelBuilder.Entity<Account>().ToTable("accounts");
         }
     }
 }
