@@ -44,7 +44,10 @@ namespace BankingApp.AccountTypes
         public bool Register([FromBody] AccountType request)
         {
             if (!AuthUserAdmin)
+            {
+                Response.StatusCode = Unauthorized().StatusCode;
                 return false;
+            }
 
             return _accountTypeService.SaveOrUpdate(request) != null;
         }
@@ -53,7 +56,10 @@ namespace BankingApp.AccountTypes
         public bool Update([FromBody] AccountType request)
         {
             if (!AuthUserAdmin)
+            {
+                Response.StatusCode = Unauthorized().StatusCode;
                 return false;
+            }
 
             return _accountTypeService.SaveOrUpdate(request) != null;
         }
@@ -62,9 +68,12 @@ namespace BankingApp.AccountTypes
         public bool Delete(int id)
         {
             if (!AuthUserAdmin)
+            {
+                Response.StatusCode = Unauthorized().StatusCode;
                 return false;
+            }
 
-            return _accountTypeService.Delete(id) == null;
+            return _accountTypeService.Delete(id) != null;
         }
     }
 }
