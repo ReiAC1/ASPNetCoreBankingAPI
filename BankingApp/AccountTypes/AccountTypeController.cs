@@ -1,4 +1,5 @@
 ﻿using BankingApp.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -29,7 +30,7 @@ namespace BankingApp.AccountTypes
                 return _accountTypeService.GetAll();
             }
 
-            // returns selected user, or empty arrasy if nothing
+            // returns selected user, or empty array if nothing
             var atype = _accountTypeService.GetById(id.Value);
             if (atype == null || atype.ID == 0)
             {
