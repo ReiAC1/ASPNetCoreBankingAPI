@@ -13,6 +13,5 @@ namespace BankingApp.Accounts
         {
 
         }
-    {
     }
 }
