@@ -147,7 +147,8 @@ namespace BankingApp.Users
 
         string EncryptPassword(string pass)
         {
-
+            if (pass == null)
+                return "";
             // password regex that says:
             // (?=)                         do not store this group as a variable
             // .*                           0 or more instances of any non-whitespace character
