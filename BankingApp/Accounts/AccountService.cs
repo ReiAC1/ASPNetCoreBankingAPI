@@ -77,6 +77,18 @@ namespace BankingApp.Accounts
             return entity;
         }
 
+        public Account Persist(Account entity)
+        {
+            if (!Verify(entity))
+                return null;
+
+            // add the user to the database
+            _repository.Add(entity);
+
+            // return a new response
+            return entity;
+        }
+
         public Account Delete(int id)
         {
             // ensure that the user exists before deleting
