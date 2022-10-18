@@ -31,7 +31,7 @@ namespace BankingApp.Accounts
         {
             var ac = GetAccountById(id);
 
-            if (ac == null) return null;
+            if (ac == null || !ac.IsActive) return null;
 
             return new AccountResponse(ac);
         }
@@ -39,7 +39,8 @@ namespace BankingApp.Accounts
         public IEnumerable<AccountResponse> GetAll()
         {
             // gets all users, but returns it as an account response
-            return _repository.GetAll().Select(e => new AccountResponse(e));
+            // ensure to exclude inactive accounts
+            return _repository.GetAll().Select(e => new AccountResponse(e)).Where(e => e.IsActive);
         }
 
         public Account SaveOrUpdate(AccountRequest request)
